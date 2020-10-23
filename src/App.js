@@ -13,6 +13,12 @@ import Typography from "@material-ui/core/Typography";
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
+  },
+  anchor:{
+    width: "10px !important",
+    height: "10px !important",
+  
+
   }
 }));
 
@@ -34,7 +40,7 @@ function App() {
       
      
 
-      <Toolbar id="back-to-top-anchor" />
+      <Toolbar id="back-to-top-anchor" className={classes.anchor}/>
       <ScrollToTop />
     </div>
   );

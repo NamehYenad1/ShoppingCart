@@ -26,6 +26,7 @@ const useStyles = makeStyles({
 
 function Cards(Props) {
   const [open, setOpen] = React.useState(false);
+  const [Count, setCount] = useState(0);
 
   const handleClick = () => {
     setOpen(true);
@@ -37,9 +38,11 @@ function Cards(Props) {
     }
 
     setOpen(false);
-  };
+};  
 
-  const [Count, setCount] = useState(0);
+
+
+
   const handleIncrement = () => {
 
     if (Props.Item.quantity > 0 ) {
@@ -56,7 +59,11 @@ function Cards(Props) {
   }
 
   const handleDecrement = () => {
-
+      if(Count-1 >= 0){
+      setCount(Count - 1)
+      Props.quantityCallBack("decrement", Props.index);
+      }
+   
 
   }
 
@@ -90,18 +97,39 @@ function Cards(Props) {
           </CardContent>
         </CardActionArea>
         <CardActions>
-          <Button size="small" color="primary" onClick={handleIncrement}>
-            Share
+
+        <Box display="flex"  justifyContent="space-between" width="100%" alignItems="center"> 
+        <Box> 
+ <Typography>
+            Price: ${Props.Item.price}
+          </Typography>
+  </Box>
+
+        <Box display="flex" alignItems="center">
+        <Button size="small" color="primary" onClick={handleDecrement}>
+            -
         </Button>
 
           <Typography>
-            {}
+            {Count}
           </Typography>
 
-          <Button size="small" color="primary">
-            Learn More
+        
+        <Button size="small" color="primary" onClick={handleIncrement}>
+            +
         </Button>
-          <Snackbar
+</Box>  
+ 
+  <Box> 
+      <Button size="medium" color="secondary"> Add to cart</Button>
+  </Box>
+
+
+        </Box>
+         
+        </CardActions>
+      </Card>
+      <Snackbar
             anchorOrigin={{
               vertical: 'bottom',
               horizontal: 'left',
@@ -121,8 +149,6 @@ function Cards(Props) {
               </React.Fragment>
             }
           />
-        </CardActions>
-      </Card>
     </Grid>
   )
 
