@@ -1,13 +1,14 @@
-import React from "react";
+import React,{useState} from "react";
 
 
 import Toolbar from "@material-ui/core/Toolbar";
 
 import TopBar from "./Components/NavBar/AppBar";
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles, useTheme,ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import ScrollToTop from "./Components/ScrollToTop/ScrollTop";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Typography from "@material-ui/core/Typography";
+import {Switch, Paper,Container,Box} from "@material-ui/core"; 
 
 
 const useStyles = makeStyles((theme) => ({
@@ -24,25 +25,42 @@ const useStyles = makeStyles((theme) => ({
 
 function App() {
 
+  const[darkMode, setDarkMode] = useState(false);
 
+
+  const theme = createMuiTheme({
+palette: {
+    type: darkMode ? "dark" : "light",
+
+},
+
+  });
+
+
+  const darkModeCallBack = (call) => {
+      setDarkMode(call);
+
+  }
 
   const classes = useStyles();
   return (
     
 
 
-    
-    <div className={classes.root}>
-      
+      <ThemeProvider theme={theme}> 
+      <Box className={classes.root} elevation={0}>
       <CssBaseline />
     
-      <TopBar />
+      <TopBar darkMode={darkMode}  darkModeCallBack = {darkModeCallBack}/>
       
      
 
       <Toolbar id="back-to-top-anchor" className={classes.anchor}/>
       <ScrollToTop />
-    </div>
+
+      <Switch checked ={darkMode} onChange={()=>setDarkMode(!darkMode)} />
+      </Box>
+    </ThemeProvider>
   );
 }
 

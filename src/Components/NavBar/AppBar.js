@@ -26,17 +26,18 @@ import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 import Cart from "../Cart/Cart";
 import ProductList from "../ProductList/ProductList";
-
+import MSwitch from "@material-ui/core/Switch";
+import BagsData from "../../DataFolder/BagsData";
 
 const drawerWidth = 240;
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
-    flexGrow: 1,
+    flexGrow: 1
   },
 
   title: {
-    flexGrow: 1,
+    flexGrow: 1
   },
 
   appBar: {
@@ -44,45 +45,45 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "black",
     transition: theme.transitions.create(["width", "margin"], {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
+      duration: theme.transitions.duration.leavingScreen
+    })
   },
   appBarShift: {
     marginLeft: drawerWidth,
     width: `calc(100% - ${drawerWidth}px)`,
     transition: theme.transitions.create(["width", "margin"], {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
+      duration: theme.transitions.duration.enteringScreen
+    })
   },
   menuButton: {
-    marginRight: 36,
+    marginRight: 36
   },
   hide: {
-    display: "none",
+    display: "none"
   },
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
-    whiteSpace: "nowrap",
+    whiteSpace: "nowrap"
   },
   drawerOpen: {
     width: drawerWidth,
     transition: theme.transitions.create("width", {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
+      duration: theme.transitions.duration.enteringScreen
+    })
   },
   drawerClose: {
     transition: theme.transitions.create("width", {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
+      duration: theme.transitions.duration.leavingScreen
     }),
     overflowX: "hidden",
     width: theme.spacing(7) + 1,
     [theme.breakpoints.up("sm")]: {
-      width: theme.spacing(9) + 1,
-    },
+      width: theme.spacing(9) + 1
+    }
   },
   toolbar: {
     display: "flex",
@@ -90,26 +91,65 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "flex-end",
     padding: theme.spacing(0, 1),
     // necessary for content to be below app bar
-    ...theme.mixins.toolbar,
+    ...theme.mixins.toolbar
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(3),
+    padding: theme.spacing(3)
   },
   nested: {
-    paddingLeft: theme.spacing(4),  
+    paddingLeft: theme.spacing(4)
   }
 }));
 
-function TopBar() {
+function TopBar(Props) {
+  const [BagArray, setBagArray] = useState(BagsData);
+  const classes = useStyles();
+  const quantityCallBack = (operation, postition) => {
+    if (operation === "increment") {
+      console.log(postition);
+      var index = BagArray.findIndex(x => x.id === postition);
+      if (index === -1) {
+        console.log("Cant increase the value");
+      } else {
+        console.log("hits");
+        let test = BagArray[index].quantity;
+        setBagArray([
+          ...BagArray.slice(0, index),
+          Object.assign({}, BagArray[index], {
+            id: index,
+            Name: BagArray[index].Name,
+            description: BagArray[index].description,
+            quantity: test - 1,
+            imgURl: BagArray[index].imgURl
+          }),
+          ...BagArray.slice(index + 1)
+        ]);
+      }
+    } else if (operation === "decrement") {
+      console.log(postition);
+      var index = BagArray.findIndex(x => x.id === postition);
+      if (index === -1) {
+        console.log("Cant increase the value");
+      } else {
+        console.log("hits");
+        let test = BagArray[index].quantity;
+        setBagArray([
+          ...BagArray.slice(0, index),
+          Object.assign({}, BagArray[index], {
+            id: index,
+            Name: BagArray[index].Name,
+            description: BagArray[index].description,
+            quantity: test + 1,
+            imgURl: BagArray[index].imgURl
+          }),
+          ...BagArray.slice(index + 1)
+        ]);
+      }
+    }
+  };
 
-
-      
-
-
-
-  const [items, setItems] = useState(   )
-
+  const [items, setItems] = useState();
 
   const [DropDownOpen, DropDownSetOpen] = React.useState(false);
 
@@ -128,22 +168,22 @@ function TopBar() {
     setOpen(false);
   };
 
-  const StyledBadge = withStyles((theme) => ({
+  const StyledBadge = withStyles(theme => ({
     badge: {
       right: -3,
       top: 13,
       border: `2px solid ${theme.palette.background.paper}`,
-      padding: "0 4px",
-    },
+      padding: "0 4px"
+    }
   }))(Badge);
-  const classes = useStyles();
+
   return (
     <React.Fragment>
       <Router>
         <AppBar
           position="fixed"
           className={clsx(classes.appBar, {
-            [classes.appBarShift]: open,
+            [classes.appBarShift]: open
           })}
         >
           <Toolbar>
@@ -155,7 +195,7 @@ function TopBar() {
               onClick={handleDrawerOpen}
               edge="start"
               className={clsx(classes.menuButton, {
-                [classes.hide]: open,
+                [classes.hide]: open
               })}
             >
               <MenuIcon />
@@ -164,11 +204,11 @@ function TopBar() {
               News
             </Typography>
             <Link to="/Cart" className="Links">
-            <IconButton aria-label="cart">
-              <StyledBadge badgeContent={1} color="secondary">
-                <ShoppingCartIcon style={{ fontSize: 30, color: "white" }} />
-              </StyledBadge>
-            </IconButton>
+              <IconButton aria-label="cart">
+                <StyledBadge badgeContent={1} color="secondary">
+                  <ShoppingCartIcon style={{ fontSize: 30, color: "white" }} />
+                </StyledBadge>
+              </IconButton>
             </Link>
           </Toolbar>
         </AppBar>
@@ -177,13 +217,13 @@ function TopBar() {
           variant="permanent"
           className={clsx(classes.drawer, {
             [classes.drawerOpen]: open,
-            [classes.drawerClose]: !open,
+            [classes.drawerClose]: !open
           })}
           classes={{
             paper: clsx({
               [classes.drawerOpen]: open,
-              [classes.drawerClose]: !open,
-            }),
+              [classes.drawerClose]: !open
+            })
           }}
         >
           <div className={classes.toolbar}>
@@ -196,7 +236,7 @@ function TopBar() {
             </IconButton>
           </div>
           <Divider />
-          
+
           <List>
             <ListItem button onClick={handleClick}>
               <ListItemIcon>
@@ -206,27 +246,27 @@ function TopBar() {
               <ListItemText primary={"Rewards"} />
               {DropDownOpen ? <ExpandLess /> : <ExpandMore />}
             </ListItem>
-          
-          <Collapse in={DropDownOpen} timeout="auto" unmountOnExit>
-          <Link to="/Cups" className="Links">
-              <ListItem button key="Cups"  className={classes.nested}>
-                <ListItemIcon>
-                  {" "}
-                  <InboxIcon />{" "}
-                </ListItemIcon>
-                <ListItemText primary={"Cups"} />
-              </ListItem>
-            </Link>
-            <Link to="/Bags" className="Links">
-              <ListItem button key="Bags"  className={classes.nested}>
-                <ListItemIcon>
-                  {" "}
-                  <InboxIcon />{" "}
-                </ListItemIcon>
-                <ListItemText primary={"Bags"} />
-              </ListItem>
-            </Link>
-          </Collapse>
+
+            <Collapse in={DropDownOpen} timeout="auto" unmountOnExit>
+              <Link to="/Cups" className="Links">
+                <ListItem button key="Cups" className={classes.nested}>
+                  <ListItemIcon>
+                    
+                    <InboxIcon />
+                  </ListItemIcon>
+                  <ListItemText primary={"Cups"} />
+                </ListItem>
+              </Link>
+              <Link to="/Bags" className="Links">
+                <ListItem button key="Bags" className={classes.nested}>
+                  <ListItemIcon>
+                   
+                    <InboxIcon />
+                  </ListItemIcon>
+                  <ListItemText primary={"Bags"} />
+                </ListItem>
+              </Link>
+            </Collapse>
           </List>
 
           <Divider />
@@ -250,13 +290,20 @@ function TopBar() {
                 <ListItemText primary={"SignUp"} />
               </ListItem>
             </Link>
+
+            <ListItem>
+              <MSwitch
+                checked={Props.darkMode}
+                onChange={() => Props.darkModeCallBack(!Props.darkMode)}
+              />
+            </ListItem>
           </List>
         </Drawer>
 
         <main className={classes.content}>
           <div className={classes.toolbar} />
           <Switch>
-            <Route path="/Login" >
+            <Route path="/Login">
               <Login />
             </Route>
 
@@ -264,21 +311,21 @@ function TopBar() {
               <SignUp />
             </Route>
 
-            <Route path="/Cups" >
-              <ProductList Category="Cups"/>
+            <Route path="/Cups">
+              <ProductList Category="Cups" />
             </Route>
-            
-            <Route path="/Bags" >
-              <ProductList Category="Bags"/>
-            </Route>
-                  
 
-            <Route path="/Cart" >
+            <Route path="/Bags">
+              <ProductList
+                Category="Bags"
+                BagArray={BagArray}
+                quantityCallBack={quantityCallBack}
+              />
+            </Route>
+
+            <Route path="/Cart">
               <Cart />
             </Route>
-
-
-
           </Switch>
         </main>
       </Router>
