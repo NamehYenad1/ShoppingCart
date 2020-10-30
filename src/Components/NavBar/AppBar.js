@@ -28,7 +28,7 @@ import Cart from "../Cart/Cart";
 import ProductList from "../ProductList/ProductList";
 import MSwitch from "@material-ui/core/Switch";
 import BagsData from "../../DataFolder/BagsData";
-
+import AllProductData from "../../DataFolder/AllProductData";
 const drawerWidth = 240;
 
 const useStyles = makeStyles(theme => ({
@@ -104,7 +104,41 @@ const useStyles = makeStyles(theme => ({
 
 function TopBar(Props) {
   const [BagArray, setBagArray] = useState(BagsData);
+  const [itemCart, setItemCart] = useState(AllProductData);
+
+  let totalPrice = 0; 
+
+  const addToCartCallBack =(item,quantity) =>{
+    var index = itemCart.findIndex(x => x.id === item.id);
+    totalPrice = totalPrice+ itemCart[index].price;
+    setItemCart([
+      ...itemCart.slice(0, index),
+      Object.assign({},itemCart[index], {
+        id: itemCart[index].id,
+        Name: itemCart[index].Name,
+        description:itemCart[index].description,
+        quantity: itemCart[index].quantity + quantity,
+        price:itemCart[index].price,
+        imgURl:itemCart[index].imgURl
+        }),
+        ...itemCart.slice(index + 1)
+
+    ])
+
+    console.log(itemCart)
+  
+
+  }
+
+  const removeFromCartCallBack =() =>{
+
+
+  }
+
+
   const classes = useStyles();
+
+  //error Here cause of test-1, need to create a new callback function to fix this for add to cart
   const quantityCallBack = (operation, postition) => {
     if (operation === "increment") {
       console.log(postition);
@@ -149,7 +183,8 @@ function TopBar(Props) {
     }
   };
 
-  const [items, setItems] = useState();
+ 
+  
 
   const [DropDownOpen, DropDownSetOpen] = React.useState(false);
 
@@ -318,6 +353,10 @@ function TopBar(Props) {
             <Route path="/Bags">
               <ProductList
                 Category="Bags"
+                itemCart = {itemCart}
+                totalPrice = {totalPrice}
+                addToCartCallBack = {addToCartCallBack}
+                removeFromCart = {removeFromCartCallBack}
                 BagArray={BagArray}
                 quantityCallBack={quantityCallBack}
               />

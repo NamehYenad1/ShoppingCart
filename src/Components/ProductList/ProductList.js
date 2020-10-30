@@ -22,6 +22,7 @@ function ProductList(Props) {
             <Cards Item={x} index ={arrayIndex}
             quantityCallBack={Props.quantityCallBack}
             key ={arrayIndex}
+            addToCartCallBack= {Props.addToCartCallBack}
             />
           ))}
         </Grid>

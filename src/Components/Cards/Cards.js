@@ -40,7 +40,12 @@ function Cards(Props) {
     setOpen(false);
 };  
 
-
+  const AddToCart =() =>{
+   
+    Props.addToCartCallBack(Props.Item, Count);
+    Props.quantityCallBack("increment", Props.index);
+    setCount(0);
+  }
 
 
   const handleIncrement = () => {
@@ -121,7 +126,7 @@ function Cards(Props) {
 </Box>  
  
   <Box> 
-      <Button size="medium" color="secondary"> Add to cart</Button>
+      <Button size="medium" color="secondary" onClick={AddToCart}> Add to cart</Button>
   </Box>
 
 
